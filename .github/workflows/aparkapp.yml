@@ -8,7 +8,7 @@ on:
 jobs:
   ping:
     runs-on: ubuntu-latest
-    environment: aparkapp-pub   # <--- AQUÍ INDICAS EL ENVIRONMENT
+    environment: AparkApp-pub  # <--- AQUÍ INDICAS EL ENVIRONMENT
 
     steps:
       - name: Call Supabase keep-alive
