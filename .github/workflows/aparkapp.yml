@@ -16,6 +16,6 @@ jobs:
           curl -s -o /dev/null -w "%{http_code}\n" \
             -X POST "https://nvwucveezbnxcflnhzzi.supabase.co/storage/v1/object/list/archivos" \
             -H "apikey: ${{ secrets.API_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.TOKEN }}"
+            -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{}'
