@@ -2,16 +2,27 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: "0 10 * * 3,0"      
+    # Cada 12 horas
+    - cron: "0 */12 * * *"
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
-    environment: AparkApp-pub  # <--- AQUÍ INDICAS EL ENVIRONMENT
+    environment: AparkApp-pub
 
     steps:
-      - name: Call Supabase keep-alive
+      - name: Insert keepalive row
+        run: |
+          curl -s \
+          -X POST "https://nvwucveezbnxcflnhzzi.supabase.co/rest/v1/keepalive" \
+          -H "apikey: ${{ secrets.API_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -H "Prefer: return=minimal" \
+          -d '{}'
+
+      - name: Ping Storage bucket
         run: |
           curl -s \
           -X POST "https://nvwucveezbnxcflnhzzi.supabase.co/storage/v1/object/list/archivos" \
