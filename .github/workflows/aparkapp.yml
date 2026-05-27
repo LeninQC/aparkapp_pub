@@ -2,7 +2,6 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    # Cada 12 horas
     - cron: "0 */12 * * *"
   workflow_dispatch:
 
@@ -12,19 +11,16 @@ jobs:
     environment: AparkApp-pub
 
     steps:
-      - name: Insert keepalive row
+      - name: Query keepalive table
         run: |
-          curl -s \
-          -X POST "https://nvwucveezbnxcflnhzzi.supabase.co/rest/v1/keepalive" \
+          curl --fail -s \
+          -X GET "https://nvwucveezbnxcflnhzzi.supabase.co/rest/v1/keepalive?select=id&limit=1" \
           -H "apikey: ${{ secrets.API_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
-          -H "Content-Type: application/json" \
-          -H "Prefer: return=minimal" \
-          -d '{}'
+          -H "Authorization: Bearer ${{ secrets.TOKEN }}"
 
       - name: Ping Storage bucket
         run: |
-          curl -s \
+          curl --fail -s \
           -X POST "https://nvwucveezbnxcflnhzzi.supabase.co/storage/v1/object/list/archivos" \
           -H "apikey: ${{ secrets.API_KEY }}" \
           -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
